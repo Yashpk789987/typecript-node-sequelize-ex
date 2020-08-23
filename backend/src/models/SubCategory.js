@@ -36,6 +36,11 @@ export default (Sequelize, DataTypes) => {
         },
       },
     },
+    demo: {
+      allowNull: false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   SubCategory.associate = (models) => {

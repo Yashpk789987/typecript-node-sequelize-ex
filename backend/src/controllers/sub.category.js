@@ -55,13 +55,23 @@ const getById = async (req, res) => {
   }
 };
 
-const updateById = async (req, res) => {
+const updateDataById = async (req, res) => {
+  try {
+    const { id } = req.body;
+    await SubCategory.update(req.body, { where: { id } });
+    res.json({ ok: true });
+  } catch (error) {
+    console.log(error);
+    res.json({ ok: false, errors: formatErrors(error) });
+  }
+};
+
+const updateLogoById = async (req, res) => {
   try {
     const { id } = req.body;
     const { logo } = await SubCategory.findByPk(id);
     await SubCategory.update(
       {
-        ...req.body,
         logo: req.file ? req.file.filename : "",
       },
       { where: { id } }
@@ -86,4 +96,39 @@ const deleteById = async (req, res) => {
   }
 };
 
-export { create, getAll, getAllByCategoryId, getById, updateById, deleteById };
+const setCategoryDemoTrue = async (req, res) => {
+  const t = await models.sequelize.transaction();
+  const Op = models.Sequelize.Op;
+  try {
+    let { ids } = req.body;
+
+    ids = JSON.parse(ids);
+
+    await SubCategory.update(
+      { demo: true },
+      { where: { id: { [Op.in]: ids } }, transaction: t }
+    );
+
+    await SubCategory.update(
+      { demo: false },
+      { where: { id: { [Op.notIn]: ids } }, transaction: t }
+    );
+
+    await t.commit();
+    res.json({ ok: true });
+  } catch (error) {
+    await t.rollback();
+    res.json({ ok: false, errors: formatErrors(error) });
+  }
+};
+
+export {
+  create,
+  getAll,
+  getAllByCategoryId,
+  getById,
+  updateDataById,
+  updateLogoById,
+  deleteById,
+  setCategoryDemoTrue,
+};

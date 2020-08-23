@@ -5,9 +5,11 @@ import {
   create,
   getAll,
   getById,
-  updateById,
   deleteById,
   getAllByCategoryId,
+  updateLogoById,
+  updateDataById,
+  setCategoryDemoTrue,
 } from "../controllers/sub.category";
 
 import { requiresAuth } from "../middlewares/auth";
@@ -29,11 +31,15 @@ router.get(
 router.get("/get-by-id/:id/p", requiresAuth, getById);
 
 router.post(
-  "/update-by-id/p",
+  "/update-logo-by-id/p",
   [requiresAuth, upload.single("logo")],
-  updateById
+  updateLogoById
 );
 
+router.post("/update-data-by-id/p", requiresAuth, updateDataById);
+
 router.get("/delete-by-id/:id/p", requiresAuth, deleteById);
+
+router.post("/set-categories-demo-true/p", requiresAuth, setCategoryDemoTrue);
 
 export const SubCategoryRouter = router;
