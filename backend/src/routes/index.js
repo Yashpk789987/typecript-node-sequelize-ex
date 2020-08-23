@@ -1,3 +1,5 @@
 import { AdminRouter } from "./admin";
+import { CategoryRouter } from "./category";
+import { SubCategoryRouter } from "./sub.category";
 
-export { AdminRouter };
+export { AdminRouter, CategoryRouter, SubCategoryRouter };

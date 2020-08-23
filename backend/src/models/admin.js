@@ -1,7 +1,19 @@
+/**
+ * @typedef {import('sequelize').Sequelize} Sequelize
+ * @typedef {import('sequelize/types')} DataTypes
+ */
+
+/**
+ * @param {DataTypes} DataTypes
+ * @param {Sequelize} Sequelize
+ * @returns
+ */
+
 import bcrypt from "bcryptjs";
-export default (sequelize, DataTypes) => {
-  const Admin = sequelize.define(
-    "ormadmin",
+
+export default (Sequelize, DataTypes) => {
+  const Admin = Sequelize.define(
+    "admin",
     {
       name: {
         type: DataTypes.STRING,
@@ -38,11 +50,12 @@ export default (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        afterValidate: async (ormadmin) => {
-          ormadmin.password = await bcrypt.hash(ormadmin.password, 12);
+        afterValidate: async (admin) => {
+          admin.password = await bcrypt.hash(admin.password, 12);
         },
       },
     }
   );
+
   return Admin;
 };

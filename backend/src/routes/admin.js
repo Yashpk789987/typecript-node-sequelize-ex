@@ -6,7 +6,6 @@ import {
   forgetPassword,
   updatePassword,
   resetPassword,
-  me,
 } from "../controllers/admin";
 
 import { validate } from "../middlewares/validate";

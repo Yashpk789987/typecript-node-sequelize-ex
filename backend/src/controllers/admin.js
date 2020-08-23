@@ -5,13 +5,14 @@ import { models } from "../models";
 import { formatErrors } from "../utils/formatErrors";
 import { sendMail } from "../utils/mail";
 
-const Admin = models.ormadmin;
+const { Admin } = models;
 
 const create = async (req, res) => {
   try {
     const admin = await Admin.create(req.body);
     res.json({ ok: true, admin });
   } catch (error) {
+    console.log(error);
     res.json({ ok: false, errors: formatErrors(error) });
   }
 };
@@ -38,6 +39,7 @@ const login = async (req, res) => {
       });
     }
   } catch (error) {
+    console.log(error);
     res.json({
       ok: false,
       error: { path: "unknown", msg: "There Is Some Techincal Issue" },
@@ -103,8 +105,4 @@ const resetPassword = async (req, res) => {
   } catch (error) {}
 };
 
-const me = async (req, res) => {
-  res.json({ name: "hello" });
-};
-
-export { create, login, forgetPassword, updatePassword, resetPassword, me };
+export { create, login, forgetPassword, updatePassword, resetPassword };
